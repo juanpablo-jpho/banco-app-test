@@ -1,1 +1,28 @@
 /* You can add global styles to this file, and also import other style files */
+
+
+body{
+    background-color: #edeff6;
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    padding: 10px 20px;
+    font-size: 14px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+.button-add {
+    background-color: #FFEB3B;
+    color: black;
+}
+
+.primary-button  {
+    background-color: #FFEB3B;
+    color: black;
+}
