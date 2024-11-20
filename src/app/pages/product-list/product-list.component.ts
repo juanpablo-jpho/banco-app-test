@@ -1,37 +1,45 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { ProductService } from '../../services/product.service';
-import { Product } from '../../models/product.model';
+import { Alert, Product } from '../../models/product.model';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
+import { AlertComponent } from '../../components/alert/alert.component';
 
 
 @Component({
   selector: 'app-product-list',
   standalone: true,
   imports: [
-    FormsModule, CommonModule, RouterModule
+    FormsModule, CommonModule, RouterModule,
+    AlertComponent
   ],
   templateUrl: './product-list.component.html',
   styleUrl: './product-list.component.css'
 })
 export class ProductListComponent {
 
-  products: Product[] = [];
+  products: Product[] = null;
   filteredProducts: Product[] = [];
   searchQuery = '';
   pageSize = 5;
   currentPage = 1;
-
   showModal: boolean = false;
   productToDelete!: Product;
 
+  dropdownOpen = false;
+  alert: Alert;
+
   constructor(private productService: ProductService,
               private router: Router
-  ) {}
+  ) {
+  }
 
   ngOnInit(): void {
-    this.fetchProducts();
+    setTimeout(() => {
+      // simulación de efecto de retardo de la respuesta del backend para mostrar el skeleton
+      this.fetchProducts();
+    }, 1500);
   }
 
   fetchProducts(): void {
@@ -42,6 +50,11 @@ export class ProductListComponent {
       },
       error: (err) => {
         console.error('Error fetching products:', err);
+        this.alert = {
+          show: true,
+          title: 'Error',
+          description: 'Error fetching products'
+        }
       },
     });
   }
@@ -66,16 +79,40 @@ export class ProductListComponent {
 
   editProduct(productId: string) {
     this.router.navigate(['/product/edit', productId]);
+    this.dropdownOpen = false; // Cierra el dropdown
   }
 
   onDelete(product: Product) {
     this.productToDelete = product;
+    // abre el alert para preguntar si está seguro de eliminar el producto
     this.openModal();
+    this.dropdownOpen = false; // Cierra el dropdown
   }
 
   // Función para mostrar el modal
   openModal() {
     this.showModal = true;
+  }
+
+  toggleDropdown() {
+    this.dropdownOpen = !this.dropdownOpen;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent) {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.dropdown')) {
+      this.dropdownOpen = false; // Cierra el dropdown si se hace clic fuera
+    }
+  }
+
+  actionAlert(ev: 'ok' | 'cancel') {
+    if (ev == 'ok') {
+      this.deleteProduct(this.productToDelete.id)
+    }
+    if (ev == 'cancel') {
+      this.closeModal();
+    }
   }
   
   // Función para cerrar el modal
@@ -90,6 +127,7 @@ export class ProductListComponent {
       response => {
         // Producto eliminado exitosamente'
         this.showModal = false;
+        // Eliminar producto del variable this.products
         const index = this.products.findIndex( product => product == this.productToDelete);
         this.products.splice(index, 1);
         this.productToDelete = null;
@@ -97,6 +135,11 @@ export class ProductListComponent {
       error => {
         // 'No se pudo eliminar el producto. Intente nuevamente.'
         this.showModal = false;
+        this.alert = {
+          show: true,
+          title: 'Error',
+          description: 'No se pudo eliminar el producto. Intente nuevamente.'
+        }
       }
     );
   }

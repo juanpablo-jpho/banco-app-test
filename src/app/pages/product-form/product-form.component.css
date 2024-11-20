@@ -36,11 +36,6 @@
     padding-bottom: 20px;
   }
   
-  .form-row {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 15px;
-  }
   
   .form-group {
     width: 48%;
@@ -81,20 +76,23 @@
     display: flex;
     justify-content: space-around;
     margin-top: 40px;
+
+    button {
+      padding: 10px 20px;
+      font-size: 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    button[type="button"] {
+      background-color: #eef1f6;
+      color: #333;
+    }
+
   }
   
-  button {
-    padding: 10px 20px;
-    font-size: 14px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-  }
   
-  button[type="button"] {
-    background-color: #eef1f6;
-    color: #333;
-  }
   
   button[type="submit"] {
     background-color: #FFEB3B;
@@ -113,4 +111,10 @@
 
   input {
     width: 80%;
+  }
+
+  @media (max-width: 500px) {
+    .form-container {
+      width: 80%;
+    }
   }

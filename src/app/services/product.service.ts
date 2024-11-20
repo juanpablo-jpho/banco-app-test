@@ -3,12 +3,14 @@ import { HttpClient, HttpErrorResponse, HttpHeaders  } from '@angular/common/htt
 import { Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { Product } from '../models/product.model';
+import { environment } from '../environments';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProductService {
-    private baseUrl = 'http://localhost:3002/bp/products';
+    
+    private baseUrl = `${environment.backend}/bp/products`;
 
     constructor(private http: HttpClient) {}
 
@@ -16,11 +18,6 @@ export class ProductService {
         return this.http.get<{ data: Product[] }>(this.baseUrl).pipe(
             catchError(this.handleError)
             );
-    }
-
-    private handleError(error: HttpErrorResponse) {
-        console.error('API Error:', error);
-        return throwError(() => new Error('Error fetching products. Try again later.'));
     }
 
     // Método para crear un producto
@@ -57,6 +54,11 @@ export class ProductService {
         return this.http.delete(`${this.baseUrl}/${productId}`).pipe(
             catchError(this.handleError)
             );
+    }
+
+    private handleError(error: HttpErrorResponse) {
+        console.error('API Error:', error);
+        return throwError(() => new Error('Error fetching products. Try again later.'));
     }
 }
 

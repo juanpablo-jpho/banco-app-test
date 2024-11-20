@@ -26,3 +26,139 @@ button {
     background-color: #FFEB3B;
     color: black;
 }
+
+.scroll-y {
+    overflow: scroll;
+    padding-bottom: 70px;
+}
+
+.back-button {
+    background-color: #9E9E9E;
+    color: #ffffff;
+    margin: 10px;
+    border-radius: 15px 0px 0px 15px;
+}
+
+
+/* Estilos básicos para el contenedor */
+.container {
+    width: 100%;
+    margin-right: auto;
+    margin-left: auto;
+  }
+  
+  /* Filas */
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  /* Columnas generales */
+  .col {
+    flex: 1;
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+  
+  /* Columna de ancho completo */
+  .col-12 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+  
+  /* Columna 6 (50%) */
+  .col-6 {
+    flex: 0 0 50%;
+    max-width: 50%;
+  }
+  
+  /* Columna 3 (25%) */
+  .col-3 {
+    flex: 0 0 25%;
+    max-width: 25%;
+  }
+  
+  /* Media queries para diferentes tamaños de pantalla */
+  
+  /* Para dispositivos pequeños (sm) */
+  @media (max-width: 576px) {
+    .col-sm-12 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    .col-sm-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    .col-sm-3 {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+  }
+  
+  /* Para dispositivos medianos (md) */
+  @media (min-width: 577px) and (max-width: 768px) {
+    .col-md-12 {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+    .col-md-6 {
+      flex: 0 0 50%;
+      max-width: 50%;
+    }
+    .col-md-3 {
+      flex: 0 0 25%;
+      max-width: 25%;
+    }
+  }
+  
+  /* Para pantallas más grandes puedes agregar más media queries según sea necesario */
+
+  .mt-2 {
+    margin-top: 10px;
+  }
+
+
+  /* Estilo base para el skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    #e0e0e0 25%,
+    #f0f0f0 50%,
+    #e0e0e0 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s infinite;
+  border-radius: 8px; /* Bordes redondeados opcionales */
+}
+
+/* Animación del skeleton */
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* Ejemplo de tamaños para diferentes elementos */
+.skeleton.xs {
+  height: 20px;
+  width: 50px;
+}
+
+.skeleton.sm {
+  height: 20px;
+  width: 150px;
+}
+
+.skeleton.md {
+  height: 40px;
+  width: 100%;
+}
+
+.skeleton.lg {
+  height: 200px;
+  width: 100%;
+}

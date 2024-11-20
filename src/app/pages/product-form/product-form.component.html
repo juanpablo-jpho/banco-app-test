@@ -1,0 +1,119 @@
+  <div class="header">
+    <div class="logo">
+      <img src="logo.webp"  alt="Banco Logo" />
+      <h1>BANCO</h1>
+    </div>
+  </div>
+
+  <div [routerLink]="['/']"  >
+    <button type="button" class="back-button">Inicio</button>
+  </div>
+  
+  <div class="form-container">
+    <h2>{{ isEditMode ? 'Editar Producto' : 'Crear Producto' }}</h2>
+
+    <div class="container">
+      <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+        <div class="row">
+          <div class="form-group col-sm-12 col-md-6 mt-2">
+            <label for="id">ID</label>
+            <input
+              id="id"
+              type="text"
+              formControlName="id"
+              [class.invalid]="productForm.get('id')?.invalid && productForm.get('id')?.touched"
+              />
+            <div class="error" *ngIf="getErrorMessage('id')">
+              {{ getErrorMessage('id') }}
+            </div>
+          </div>
+          <div class="form-group col-sm-12 col-md-6 mt-2">
+            <label for="name">Nombre</label>
+            <input
+              id="name"
+              type="text"
+              formControlName="name"
+              [class.invalid]="productForm.get('name')?.invalid && productForm.get('name')?.touched"
+            />
+            <div class="error" *ngIf="productForm.get('name')?.invalid && productForm.get('name')?.touched">
+              {{ getErrorMessage('name') }}
+            </div>
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="form-group col-sm-12 col-md-6 mt-2">
+            <label for="description">Descripción</label>
+            <textarea
+              id="description"
+              formControlName="description"
+              rows="1"
+              [class.invalid]="productForm.get('description')?.invalid && productForm.get('description')?.touched"
+            ></textarea>
+            <div class="error" *ngIf="productForm.get('description')?.invalid && productForm.get('description')?.touched">
+              {{ getErrorMessage('description') }}
+            </div>
+          </div>
+          <div class="form-group col-sm-12 col-md-6 mt-2">
+            <label for="logo">Logo</label>
+            <input
+              id="logo"
+              type="text"
+              formControlName="logo"
+              [class.invalid]="productForm.get('logo')?.invalid && productForm.get('logo')?.touched"
+            />
+            <div class="error" *ngIf="productForm.get('logo')?.invalid && productForm.get('logo')?.touched">
+              {{ getErrorMessage('logo') }}
+            </div>
+          </div>
+        </div>
+    
+        <div class="row">
+          <div class="form-group col-sm-12 col-md-6 mt-2">
+            <label for="dateRelease">Fecha de Liberación</label>
+            <input
+              id="dateRelease"
+              type="date"
+              formControlName="dateRelease"
+              [class.invalid]="productForm.get('dateRelease')?.invalid && productForm.get('dateRelease')?.touched"
+            />
+            <div class="error" *ngIf="productForm.get('dateRelease')?.invalid && productForm.get('dateRelease')?.touched">
+              {{ getErrorMessage('dateRelease') }}
+            </div>
+          </div>
+          <div class="form-group col-sm-12 col-md-6 mt-2">
+            <label for="dateRevision">Fecha de Revisión</label>
+            <input
+              id="dateRevision"
+              type="date"
+              formControlName="dateRevision"
+              [class.invalid]="productForm.get('dateRevision')?.invalid && productForm.get('dateRevision')?.touched"
+            />
+            <div class="error" *ngIf="productForm.get('dateRevision')?.invalid && productForm.get('dateRevision')?.touched">
+              {{ getErrorMessage('dateRevision') }}
+            </div>
+          </div>
+        </div>
+    
+        <div class="form-actions">
+          @if (!isEditMode) {
+            <button type="button" (click)="resetForm()">Reiniciar</button>
+          }
+          <button type="submit" [disabled]="productForm.invalid">
+            {{ isEditMode ? 'Actualizar' : 'Crear' }}
+          </button>
+        </div>
+        
+      </form>
+    </div>
+
+  </div>
+
+
+  @if(alert?.show) {
+    <app-alert 
+      [title]="alert.title"
+      [description]="alert.description"
+      (action)="alert.show = false">
+    </app-alert>
+  }

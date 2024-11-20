@@ -7,4 +7,10 @@ export interface Product {
     date_revision: string;
 }
 
+export interface Alert {
+    title: string;
+    description: string;
+    show: boolean;
+}
+
 

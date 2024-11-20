@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ProductService } from '../../services/product.service';
 import { catchError, debounceTime, switchMap } from 'rxjs/operators';
 import { of } from 'rxjs';
+import { Alert } from '../../models/product.model';
+import { AlertComponent } from '../../components/alert/alert.component';
 
 @Component({
   selector: 'app-product-form',
@@ -12,15 +14,17 @@ import { of } from 'rxjs';
   styleUrls: ['./product-form.component.css'],
   standalone: true,
   imports: [
-    FormsModule, CommonModule, ReactiveFormsModule
+    FormsModule, CommonModule, ReactiveFormsModule, RouterLink,
+    AlertComponent
   ],
 })
 export class ProductFormComponent implements OnInit {
   productForm: FormGroup;
   isEditMode: boolean = false; // Para distinguir entre creación y edición
-  submissionMessage: string = '';
   productId: string | null = null;
   idExists: boolean | null = null;
+
+  alert: Alert;
 
   constructor(
     private fb: FormBuilder,
@@ -100,6 +104,11 @@ export class ProductFormComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error al cargar producto:', err);
+        this.alert = {
+          show: true,
+          title: 'Error',
+          description: 'Error al cargar producto, intente nuevamente más tarde'
+        }
       },
     });
   }
@@ -113,8 +122,7 @@ export class ProductFormComponent implements OnInit {
       currentDate.setHours(0); 
       currentDate.setMinutes(0); 
       currentDate.setSeconds(0);
-      // console.log('selectedDate -> ', selectedDate, currentDate);
-      
+      // console.log('selectedDate -> ', selectedDate, currentDate); 
       return selectedDate >= currentDate ? null : { invalidDate: true };
     };
   }
@@ -152,12 +160,15 @@ export class ProductFormComponent implements OnInit {
         delete productData.id
         this.productService.updateProduct(this.productId, productData).subscribe({
           next: (response) => {
-            this.submissionMessage = 'Producto actualizado exitosamente.';
             this.router.navigate(['/products']); // Volver a la lista
           },
           error: (error) => {
             console.error('Error al actualizar producto:', error);
-            this.submissionMessage = 'Error al actualizar producto.';
+            this.alert = {
+              show: true,
+              title: 'Error',
+              description: 'Error al actualizar producto, intente nuevamente más tarde'
+            }
           },
         });
       } else {
@@ -165,12 +176,16 @@ export class ProductFormComponent implements OnInit {
         console.log('Crear producto -> ', productData);
         this.productService.createProduct(productData).subscribe({
           next: (response) => {
-            this.submissionMessage = 'Producto creado exitosamente.';
             this.router.navigate(['/products']); // Volver a la lista
           },
           error: (error) => {
             console.error('Error al crear producto:', error);
-            this.submissionMessage = 'Error al crear producto.';
+            this.alert = {
+              show: true,
+              title: 'Error',
+              description: 'Error al crear producto, intente nuevamente más tarde'
+            }
+            
           },
         });
       }
@@ -202,6 +217,5 @@ export class ProductFormComponent implements OnInit {
 
   resetForm() {
     this.productForm.reset();
-    this.submissionMessage = '';
   }
 }

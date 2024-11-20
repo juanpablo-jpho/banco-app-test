@@ -1,0 +1,14 @@
+<div class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4>{{title}}</h4>
+        <p>{{description}}</p>
+      </div>
+      <div class="modal-footer">
+        @if(textButtonCancel) {
+            <button (click)="emitAction('cancel')">{{textButtonCancel}}</button>
+        }
+        <button class="primary-button ms-3" (click)="emitAction('ok')">{{textButtonOk}}</button>
+      </div>
+    </div>
+</div>
